@@ -7,8 +7,8 @@ import java.util.List;
 
 public class MainCoverage {
 
-	private static String fileCoverageSimple = "coverage-v5.txt";
-	private static String fileCoverageEchalon = "coverage-ech-exp1.txt";
+	private static String coverageFileSimple = "coverage-vG.txt";
+	private static String coverageFileEchalon = "coverage-vE.txt";
 	private static String base = "src/dados";
 
 	public static void main(String[] args) {
@@ -21,23 +21,29 @@ public class MainCoverage {
 	}
 
 	protected static void execGreedyTotal() {
-		GreedyTotal gt = new GreedyTotal(base, fileCoverageSimple);
+		GreedyTotal gt = new GreedyTotal(base, coverageFileSimple);
 		gt.Print(gt.getSelectedTestSequence());
 	}
 
 	protected static void execGreedyAdd() {
-		GreedyAdditional ga = new GreedyAdditional(base, fileCoverageSimple);
+		GreedyAdditional ga = new GreedyAdditional(base, coverageFileSimple);
 		ga.Print(ga.getSelectedTestSequence());
 	}
 
+	/**
+	 * Call execution's echalon total technique. Require the coverageFile and
+	 * blockAffectedFile.
+	 */
 	private static void execEchalonTotal() {
-		EchalonTotal et = new EchalonTotal(base, fileCoverageEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp1.txt"));
+		Echelon et = new Echelon(base, coverageFileEchalon);
+		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-vtest.txt"));
 		et.print(et.prioritize());
 	}
 
 	/**
-	 * Class aux for Echalon's execution 
+	 * Function aux for Echalon's execution. Get from file the modified classes and
+	 * return them.
+	 * 
 	 * @param blockAffectedFile
 	 * @return
 	 */
@@ -46,7 +52,7 @@ public class MainCoverage {
 		String line;
 		try {
 			BufferedReader bReader = new BufferedReader(new FileReader(blockAffectedFile));
-			
+
 			while ((line = bReader.readLine()) != null) {
 				blockAffected.add(line);
 			}

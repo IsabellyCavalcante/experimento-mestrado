@@ -42,10 +42,7 @@ public class GreedyTotal {
 				}
 				tempAl.add(line);
 			}
-			this.CoverageMatrix = new char[tempAl.size()][columnNum]; // Initialize
-																		// the
-																		// Coverage
-																		// Matrix.
+			this.CoverageMatrix = new char[tempAl.size()][columnNum]; // Initialize the Coverage Matrix.
 
 			// Store the information in the ArrayList to the Array.
 			for (int i = 0; i < tempAl.size(); i++) {
@@ -70,7 +67,6 @@ public class GreedyTotal {
 	}
 
 	public int[] getSelectedTestSequence() {
-
 		this.getCoverageMatrix(this.coverageFile);
 		int len = this.CoverageMatrix.length;
 		int[] selectedTestSequence = new int[len];
@@ -97,7 +93,7 @@ public class GreedyTotal {
 	}
 
 	public void Print(int[] a) {
-		System.out.println("------int[] Start-------Len: "+a.length);
+		System.out.println("------int[] Start-------Len: " + a.length);
 		for (int i = 0; i < a.length; i++) {
 			System.out.print(a[i] + ",");
 		}
