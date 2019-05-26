@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -23,13 +25,12 @@ public class Echelon {
 		// ex return {["classeA.1"], ["classeB.3", "classeB.5", "classeB.45"]}
 		getCoverageMatrix(this.coverageFile);
 
-		List<Integer> finalList = new ArrayList<>(); // final list with prioritized tests
+		List<Integer> finalList = new ArrayList(); // final list with prioritized tests
 
 		// calcula a primeira vez a lista de pesos e o numero de testes que cobrem algo
 		List<Entry<Integer, Integer>> originalWeightList = getTotalModifiedCoverage(null, blockAffected);
 
 		while (getQtdTestsWithCov(originalWeightList)) {
-
 			// Fazendo uma copia dos blocos afetados
 			List<String> currBlkAffected = new ArrayList<>(blockAffected);
 
@@ -49,11 +50,21 @@ public class Echelon {
 				else
 					biggerTest = getBiggerTest(listWithBiggerWeight);
 
-				// add o maior na lista final, depois removendo da lista de testes e por fim
-				// removendo o que foi coberto por ele da lista de impactados
+				// add o maior na lista final e depois removendo da lista de testes
 				finalList.add(biggerTest.getKey());
-				originalWeightList.remove(biggerTest);
 				copyWeightList.remove(biggerTest);
+
+				// removendo da lista original - eh necessario fazer isso dessa forma pois o
+				// elemento nao eh mais o mesmo depois que a cobertura for atualizada, dai tem
+				// que procurar pela key para remover
+				for (Entry<Integer, Integer> entry : originalWeightList) {
+					if (entry.getKey().equals(biggerTest.getKey())) {
+						originalWeightList.remove(entry);
+						break;
+					}
+				}
+
+				// por fim removendo o que foi coberto por ele da lista de impactados
 				removeImpactedCoverage(biggerTest, currBlkAffected);
 
 				// atualizando a lista de pesos
@@ -124,7 +135,7 @@ public class Echelon {
 
 		return auxList;
 	}
-	
+
 	private int getWeight(String[] testCoverage, List<String> blkAffected) {
 		int count = 0;
 
@@ -134,7 +145,7 @@ public class Echelon {
 		}
 		return count;
 	}
-	
+
 	private boolean getQtdTestsWithCov(List<Entry<Integer, Integer>> weightList) {
 		for (Entry<Integer, Integer> entry : weightList) {
 			if (entry.getValue() != 0)

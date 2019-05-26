@@ -12,12 +12,9 @@ public class MainCoverage {
 	private static String base = "src/dados";
 
 	public static void main(String[] args) {
-		// execGreedyTotal();
-
-		// execGreedyAdd();
-
+//		execGreedyTotal();
+//		execGreedyAdd();
 		execEchalonTotal();
-
 	}
 
 	protected static void execGreedyTotal() {
@@ -34,9 +31,9 @@ public class MainCoverage {
 	 * Call execution's echalon total technique. Require the coverageFile and
 	 * blockAffectedFile.
 	 */
-	private static void execEchalonTotal() {
+	protected static void execEchalonTotal() {
 		Echelon et = new Echelon(base, coverageFileEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-vtest.txt"));
+		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp2.txt"));
 		et.print(et.prioritize());
 	}
 

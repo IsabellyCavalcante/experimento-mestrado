@@ -93,11 +93,9 @@ public class GreedyTotal {
 	}
 
 	public void Print(int[] a) {
-		System.out.println("------int[] Start-------Len: " + a.length);
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + ",");
-		}
-		System.out.println("\n------int[] End------");
+		System.out.println("------int[] Start------Len: " + a.length);
+		System.out.println(Arrays.toString(a));
+		System.out.println("------int[] End------");
 	}
 
 }
