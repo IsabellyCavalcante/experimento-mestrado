@@ -1,3 +1,4 @@
+package main;
 /*
  * Use Greedy Additional Algorithm for Test Case Prioritization.
  * Yafeng.Lu@cs.utdallas.edu

@@ -1,11 +1,10 @@
+package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -19,13 +18,21 @@ public class Echelon {
 
 	public Echelon(String Directory, String matrixFile) {
 		this.coverageFile = Directory + SEP + matrixFile;
+		
+		// ex return {["classeA.1"], ["classeB.3", "classeB.5", "classeB.45"]}
+		getCoverageMatrix(this.coverageFile);
+	}
+
+	/**
+	 * For tests
+	 */
+	public Echelon(List<String[]> coverageMatrix) {
+		this.coverageMatrix = coverageMatrix;
 	}
 
 	public List<Integer> prioritize() {
-		// ex return {["classeA.1"], ["classeB.3", "classeB.5", "classeB.45"]}
-		getCoverageMatrix(this.coverageFile);
 
-		List<Integer> finalList = new ArrayList(); // final list with prioritized tests
+		List<Integer> finalList = new ArrayList<Integer>(); // final list with prioritized tests
 
 		// calcula a primeira vez a lista de pesos e o numero de testes que cobrem algo
 		List<Entry<Integer, Integer>> originalWeightList = getTotalModifiedCoverage(null, blockAffected);

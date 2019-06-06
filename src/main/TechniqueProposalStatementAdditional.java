@@ -1,3 +1,4 @@
+package main;
 //
 //
 ///*
@@ -34,7 +35,7 @@
 // * @version 1.1
 // *
 // */
-//public class TechniqueProposalStatementTotal extends ModificationTechnique implements Technique {
+//public class TechniqueProposalStatementAdditional extends ModificationTechnique implements Technique {
 //	
 //	private List<String> affectedBlocks;
 //	
@@ -52,8 +53,8 @@
 //		this.deletedCoverages = deletedCoverages;
 //	}
 //	
-//	public boolean containsBlock(final String block){
-//		return affectedBlocks.contains(block);
+//	public boolean containsStatement(final String statement) {
+//		return this.affectedBlocks.contains(statement);
 //	}
 //	
 //	/**
@@ -65,7 +66,9 @@
 //	 */
 //	private double getPercentage(final double weight){
 //		int sizeBlock = getAffectedBlocks().size();
-//		if(sizeBlock == 0) return 0;
+//		if(sizeBlock == 0) {
+//			return 0;
+//		}
 //		return weight/sizeBlock;
 //	}
 //
@@ -74,19 +77,21 @@
 //	 * 
 //	 * @param objectList
 //	 * 				List with all test case coverage statements.
-//	 * @return A List<String> with the test case coverage changed statements.
+//	 * @return double with the test .
 //	 */
-//    private List<String> getWeight(final List objectList) {
-//        Iterator<String> itObjects = objectList.iterator();
-//        List<String> statementCoverage = new ArrayList<String>();
-//        while(itObjects.hasNext()){
-//        	String obj = itObjects.next();
-//        	if(containsBlock(obj)){
-//        		statementCoverage.add(obj);
-//        	}
-//        }
-//        return statementCoverage;
-//    }
+//	public double getWeight(final TestCase test) {
+//		int count = 0;
+//		Iterator<String> itObjects = this.getCoverageDistinctWithDeletedStatements(test).iterator();
+//		List<String> clone = new ArrayList<String>(this.affectedBlocks);
+//		while(itObjects.hasNext()){
+//			String obj = itObjects.next();
+//			if(containsStatement(obj)) {
+//				count++;
+//				clone.remove(obj);
+//			}
+//		}
+//		return getPercentage(count);
+//	}
 //    
 //    /**
 //     * Calculate the test case weight.
@@ -100,53 +105,22 @@
 //     */
 //    private void calulateWeight(List<TestCaseProposal> weightedList, List<TestCase> notWeightedList,
 //    		final List<TestCase> copyList) {
-//    	for (TestCase testCase : copyList) {
-//        	List<String> weight = testCase.getStatementsCoverage();
-//        	List<String> deleted = deletedCoverages.get(testCase.getSignature());
-//        	if(deleted != null) {
-//        		weight.addAll(deleted);
-//        	}
-//    		List<String> statementCoverage = getWeight(weight);
-//        	if (statementCoverage.size() != 0.0) {
-//        		weightedList.add(new TestCaseProposal(getPercentage(statementCoverage.size()),
-//        				testCase, statementCoverage));
-//        	}
-//        	else {
-//        		notWeightedList.add(testCase);
-//        	}
-//		}
-//    }
-//    
-//    /**
-//     * Create the statement echelon list.
-//     * 
-//     * @param weightedList
-//     * 				The weighted list.
-//     * 
-//     * @return List<StatementEchelonChanged>.
-//     */
-//    private List<StatementProposal> createStatementEchelonList(
-//    		final List<TestCaseProposal> weightedList) {
-//    	List<StatementProposal> statements = new ArrayList<StatementProposal>();
-//    	
-//    	// Itera sobre todos os blocos afetados.
-//    	for (String block : affectedBlocks) {
-//    		List<TestCase> testCases = new ArrayList<TestCase>();
-//			/*
-//			 *  Itera sobre todos os casos de teste a fim de buscar os casos de teste
-//			 *  que cobrem esse bloco afetado.
-//			 */
-//    		for (TestCaseProposal testCase : weightedList) {
-//				if (testCase.getStatementCoverage().contains(block)) {
-//					testCases.add(testCase.getTestCase());
-//				}
-//			}
-//    		StatementProposal st = new StatementProposal(block, testCases);
-//    		statements.add(st);
-//    		System.out.println(st);
+//    	TestCase test = null;
+//    	if(this.affectedBlocks.isEmpty()) {
+//    		notWeightedList.addAll(copyList);
+//    		return;
 //    	}
-//    	
-//    	return statements;
+//    	while(!copyList.isEmpty() && !this.affectedBlocks.isEmpty()){
+//            test = biggerWeight(copyList, weightedList, notWeightedList);
+//            if (!test.getSignature().isEmpty() && getWeight(test) > 0.0) {
+//                copyList.remove(test);
+//                weightedList.add(new TestCaseProposal(getWeight(test),
+//                		test, this.getCoverageDistinctWithDeletedStatements(test)));
+//            } else {
+//            	copyList.remove(test);
+//            	notWeightedList.add(test);
+//            }
+//        }
 //    }
 //    
 //    /**
@@ -156,7 +130,6 @@
 //     * 				The weighted list.
 //     */
 //    private void calculateScore(final List<TestCaseProposal> weightedList) {
-////    	List<StatementEchelonChanged> statementsChanged = createStatementEchelonList(weightedList);
 //    	List<String> controlList = new ArrayList<String>();
 //    	// Incremento estático.
 ////    	double incFactor = 1.0 / (double) this.affectedBlocks.size();
@@ -164,13 +137,12 @@
 //    	
 //    	for (TestCaseProposal testCaseEchelon : weightedList) {
 //    		double score = testCaseEchelon.getWeight();
-//    		// Incremento dinâmico.
-//    		double incFactor = 1.0 / (double) testCaseEchelon.getStatementCoverage().size();
-//        	double decFactor = 1.0 / (2.0 * testCaseEchelon.getStatementCoverage().size());
-//    		
+////    		// Incremento dinâmico.
+//    		double incFactor = 1.0 / (double) this.getCoverageDistinctWithDeletedStatements(testCaseEchelon.getTestCase()).size();
+//        	double decFactor = 1.0 / (2.0 * this.getCoverageDistinctWithDeletedStatements(testCaseEchelon.getTestCase()).size());
 //    		// Primeiro elemento é quem dita a lista de controle.
 //    		if(weightedList.get(0).equals(testCaseEchelon)) {
-//    			score += testCaseEchelon.getStatementCoverage().size()*incFactor;
+//    			score += testCaseEchelon.getWeight()*incFactor;
 //    			controlList = testCaseEchelon.getStatementCoverage();
 //    			testCaseEchelon.setScore(score);
 //    			continue;
@@ -184,7 +156,6 @@
 //    				controlList.add(change);
 //    			}
 //    		}
-//    		
 //    		testCaseEchelon.setScore(score);
 //		}
 //    }
@@ -223,42 +194,77 @@
 //    	return suiteList;
 //    }
 //    
+//    public TestCase biggerWeight(List<TestCase> copyList, List<TestCaseProposal> weightedList, List<TestCase> notWeightedList){
+//        int indexBigger = 0;
+//        double bigger=0;
+//        
+//        int index=0;
+//        for (TestCase test: copyList){
+//        	double weight = getWeight(test);
+//            if (weight > bigger) {
+//                indexBigger = index;
+//                bigger = weight;
+//            }
+//            index++;
+//        }
+//        
+//        List<TestCase> sameWeight = new ArrayList<TestCase>();
+//        
+//        for (TestCase test: copyList) {
+//        	// Insere as linhas previamente deletadas (caso a mudança seja uma deleção).
+//        	List<String> distinct = this.getCoverageDistinctWithDeletedStatements(test);
+//        	double weight = getWeight(test);
+//            if (weight == bigger){
+//                sameWeight.add(test);
+//            }
+//        }
+//        
+//        if (sameWeight.size()>1)
+//            Collections.shuffle(sameWeight);
+//        
+//        return  sameWeight.size() > 0 ? sameWeight.get(0): new TestCase("");
+//        
+//    }
+//    
+//    private List<String> getCoverageDistinctWithDeletedStatements(final TestCase test) {
+//    	// Insere as linhas previamente deletadas (caso a mudança seja uma deleção).
+//    	List<String> deleted = deletedCoverages.get(test.getSignature());
+//    	List<String> distinct = test.getStatementsCoverageDistinct();
+//    	if(distinct != null && deleted != null) {
+//    		distinct.addAll(deleted);
+//    	}
+//    	return distinct;
+//    }
+//    
 //	@Override
 //	public List<String> prioritize(List<TestCase> tests)throws EmptySetOfTestCaseException {
 //		List<TestCase> copyList = new ArrayList<TestCase>(tests);
 //        ArrayList<TestCaseProposal> weightedList = new ArrayList<TestCaseProposal>();
-//        ArrayList<TestCaseProposal> scoredList = new ArrayList<TestCaseProposal>();
 //        ArrayList<TestCase> notWeightedList = new ArrayList<TestCase>();
-//        System.out.println("Technique Proposal Statement Total");
+//        System.out.println("Technique Proposal Statement Additional");
 //        calulateWeight(weightedList, notWeightedList, copyList);
-//        
 //        Collections.sort(weightedList, new EchelonComparator(EchelonComparator.BY_WEIGHT));
 //        Collections.reverse(weightedList);
-//        for (TestCaseProposal testCase : weightedList) {
-//			scoredList.add(testCase);
-//		}
-//        
 //        calculateScore(weightedList);
-//        
 //        Collections.sort(weightedList, new EchelonComparator(EchelonComparator.BY_SCORE));
 //        Collections.reverse(weightedList);
+//        
 //        System.out.println("By Score:");
 //        int i = 0;
 //        for (TestCaseProposal testCaseEchelon : weightedList) {
 //			System.out.println("[" + i +"] " + testCaseEchelon.getTestCase() 
 //					+ " [S - " +testCaseEchelon.getScore() 
-//					+ " | W - " + testCaseEchelon.getWeight() + "]"
-//					+ " ------ " + scoredList.get(i).getTestCase() 
-//					+ " [W - " + scoredList.get(i).getWeight() + "]");
+//					+ " | W - " + testCaseEchelon.getWeight() + "]");
 //			i++;
 //        }
 //        
 //        List<String> suiteList = getSignatureWeightedList(weightedList);
 //    	this.weightList = new ArrayList<String> (suiteList);
-//    	// Testes que não foram afetados são ordenados randomicamente.
+//        // Testes que não foram afetados são ordenados randomicamente.
 //    	Collections.shuffle(notWeightedList);
 //    	this.notWeightList = new ArrayList<String>(getSignatureNotWeightedList(notWeightedList));
 //    	suiteList.addAll(this.notWeightList);
-//        return suiteList;
+//        
+//    	return suiteList;
 //    }
 //}

@@ -1,3 +1,4 @@
+package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,9 +13,9 @@ public class MainCoverage {
 	private static String base = "src/dados";
 
 	public static void main(String[] args) {
-//		execGreedyTotal();
+		execGreedyTotal();
 //		execGreedyAdd();
-		execEchalonTotal();
+//		execEchalonTotal();
 	}
 
 	protected static void execGreedyTotal() {
@@ -44,7 +45,7 @@ public class MainCoverage {
 	 * @param blockAffectedFile
 	 * @return
 	 */
-	private static List<String> getBlockAffected(String blockAffectedFile) {
+	protected static List<String> getBlockAffected(String blockAffectedFile) {
 		List<String> blockAffected = new ArrayList<>();
 		String line;
 		try {

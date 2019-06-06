@@ -1,3 +1,4 @@
+package main;
 /*
  * Use Greedy Total Algorithm for Test Case Prioritization.
  * Yafeng.Lu@utdallas.edu
