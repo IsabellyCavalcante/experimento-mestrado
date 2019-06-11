@@ -13,9 +13,10 @@ public class MainCoverage {
 	private static String base = "src/dados";
 
 	public static void main(String[] args) {
-		execGreedyTotal();
-//		execGreedyAdd();
+//		execGreedyTotal();
+		execGreedyAdd();
 //		execEchalonTotal();
+//		execEchalonTotalTimeExecution();
 	}
 
 	protected static void execGreedyTotal() {
@@ -34,7 +35,14 @@ public class MainCoverage {
 	 */
 	protected static void execEchalonTotal() {
 		Echelon et = new Echelon(base, coverageFileEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp2.txt"));
+		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp3.txt"));
+		et.print(et.prioritize());
+	}
+
+	protected static void execEchalonTotalTimeExecution() {
+		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFileEchalon);
+		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp3.txt"));
+		et.setTimeExecution(base, "times.txt");
 		et.print(et.prioritize());
 	}
 

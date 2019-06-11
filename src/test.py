@@ -1,4 +1,4 @@
-with open('dados/Priorizacao_do_exp6.txt', 'r') as tests:
+with open('dados/Priorizacao_do_exp3.txt', 'r') as tests:
     
     file_tests = tests.readlines()
 
