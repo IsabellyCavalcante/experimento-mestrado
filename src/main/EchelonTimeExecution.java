@@ -56,7 +56,7 @@ public class EchelonTimeExecution {
 				if (listWithBiggerWeight.size() == 1)
 					biggerTest = listWithBiggerWeight.get(0);
 				else
-					biggerTest = getBiggerTest(listWithBiggerWeight);
+					biggerTest = getTestWithLessTime(listWithBiggerWeight);
 
 				// add o maior na lista final e depois removendo da lista de testes
 				finalList.add(biggerTest.getKey());
@@ -182,20 +182,20 @@ public class EchelonTimeExecution {
 	 * @param tests
 	 * @return
 	 */
-	private Entry<Integer, Integer> getBiggerTest(List<Entry<Integer, Integer>> biggerWeightList) {
-		Entry<Integer, Integer> biggerTest = null;
-		double biggerValue = Double.MAX_VALUE;
+	private Entry<Integer, Integer> getTestWithLessTime(List<Entry<Integer, Integer>> testList) {
+		Entry<Integer, Integer> chosenTest = null;
+		double minValue = Double.MAX_VALUE;
 
-		for (Entry<Integer, Integer> test : biggerWeightList) {
+		for (Entry<Integer, Integer> test : testList) {
 			
 			double time = timeExecution.get(test.getKey());
 
-			if (time < biggerValue) {
-				biggerValue = time;
-				biggerTest = test;
+			if (time < minValue) {
+				minValue = time;
+				chosenTest = test;
 			}
 		}
-		return biggerTest;
+		return chosenTest;
 	}
 
 	private void removeImpactedCoverage(Entry<Integer, Integer> biggerTest, List<String> currBlkAffected) {
