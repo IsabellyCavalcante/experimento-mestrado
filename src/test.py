@@ -1,8 +1,8 @@
-with open('dados/Priorizacao_do_exp3.txt', 'r') as tests:
+with open('dados/Priorizacao_do_exp1.txt', 'r') as tests:
     
     file_tests = tests.readlines()
 
-    with open('dados/tests-vG.txt', 'r') as names:
+    with open('dados/tests.txt', 'r') as names:
         
         file_names = names.readlines()
         
@@ -19,14 +19,10 @@ with open('dados/Priorizacao_do_exp3.txt', 'r') as tests:
 
             for i in prio:
                 out.write(file_names[int(i)])
-
-    with open('dados/tests-vE.txt', 'r') as names:
         
-        file_names = names.readlines()
-        
-        #Echalon
-        with open('dados/echalon_final.txt', 'w') as out:
-            prio = file_tests[15].split(",")
+        # Echelon
+        with open('dados/echelon_final.txt', 'w') as out:
+            prio = file_tests[15].split(", ")
 
             for i in prio:
                 out.write(file_names[int(i)])
