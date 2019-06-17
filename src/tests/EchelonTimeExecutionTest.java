@@ -18,13 +18,13 @@ class EchelonTimeExecutionTest {
 		ech = new EchelonTimeExecution(getCoverage());
 
 		ech.setBlockAffected(getBlock());
-		ech.setTimeExecution("", "");
+		ech.setTimeExecution("src/dados", "times.txt");
 	}
 
 	@Test
 	void test() {
 		List<Integer> exp = new ArrayList<>();
-		Collections.addAll(exp, 0, 5, 8, 3, 1, 4, 6, 9, 2, 7);
+		Collections.addAll(exp, 5, 0, 8, 3, 1, 4, 6, 9, 2, 7);
 		
 		assertEquals(ech.prioritize(), exp);
 	}
