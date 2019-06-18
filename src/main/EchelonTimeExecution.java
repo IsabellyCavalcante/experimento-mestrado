@@ -1,4 +1,5 @@
 package main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,7 +20,7 @@ public class EchelonTimeExecution {
 
 	public EchelonTimeExecution(String Directory, String matrixFile) {
 		this.coverageFile = Directory + SEP + matrixFile;
-		
+
 		// ex return {["classeA.1"], ["classeB.3", "classeB.5", "classeB.45"]}
 		getCoverageMatrix(this.coverageFile);
 	}
@@ -179,6 +180,7 @@ public class EchelonTimeExecution {
 
 	/**
 	 * Seleciona o teste com menor tempo de execução
+	 * 
 	 * @param tests
 	 * @return
 	 */
@@ -187,7 +189,7 @@ public class EchelonTimeExecution {
 		double minValue = Double.MAX_VALUE;
 
 		for (Entry<Integer, Integer> test : testList) {
-			
+
 			double time = timeExecution.get(test.getKey());
 
 			if (time < minValue) {
@@ -217,7 +219,7 @@ public class EchelonTimeExecution {
 
 	public void setTimeExecution(String Directory, String matrixFile) {
 		String executionFile = Directory + SEP + matrixFile;
-		
+
 		try {
 			BufferedReader bReader = new BufferedReader(new FileReader(executionFile));
 			ArrayList<String> tempAl = new ArrayList<String>();
@@ -237,14 +239,20 @@ public class EchelonTimeExecution {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
-	
+
+	/**
+	 * For tests
+	 */
+	public void setCoverage(List<String[]> coverageMatrix) {
+		this.coverageMatrix = coverageMatrix;
+	}
+
 	public void print(List<Integer> tests) {
 		System.out.println("------int[] Start-------Len: " + tests.size());
 
 		tests.stream().forEach(element -> System.out.print(element + ","));
 		System.out.println("\n------int[] End------");
 	}
+
 }
