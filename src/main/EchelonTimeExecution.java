@@ -251,7 +251,7 @@ public class EchelonTimeExecution {
 	public void print(List<Integer> tests) {
 		System.out.println("------int[] Start-------Len: " + tests.size());
 
-		tests.stream().forEach(element -> System.out.print(element + ","));
+		tests.stream().forEach(element -> System.out.print(element + ", "));
 		System.out.println("\n------int[] End------");
 	}
 

@@ -98,5 +98,4 @@ public class GreedyTotal {
 		System.out.println(Arrays.toString(a));
 		System.out.println("------int[] End------");
 	}
-
 }

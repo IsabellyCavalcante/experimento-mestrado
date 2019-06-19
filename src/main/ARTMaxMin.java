@@ -4,27 +4,28 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
  * Use ART-MaxMin Algorithm for Test Case Prioritization.
  * Yafeng.Lu@cs.utdallas.edu
  */
 public class ARTMaxMin {
+
 	String Directory;
 	String matrixFile;
 	String coverageFile;
-	char[][] CoverageMatrix;
-	final String sep = File.separator;
+	char[][] coverageMatrix;
 	ArrayList<Integer> coveredZero = new ArrayList<Integer>(); // Store the test case in case it covers 0
 																// statements/methods/branches.
 
 	public ARTMaxMin(String Directory, String matrixFile) {
 		this.Directory = Directory; // Get the directory to Create a output file for Statistic Data.
 		this.matrixFile = matrixFile; // Create a new file use the same file prefix for Statistic Data.
-		this.coverageFile = Directory + this.sep + matrixFile;
+		this.coverageFile = Directory + File.separator + matrixFile;
 	}
 
-	//Read the Coverage File and Store the value to the APBC, APDC or APSC Matrix.
+	// Read the Coverage File and Store the value to the APBC, APDC or APSC Matrix.
 	public void getCoverageMatrix(String coverageFile) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(coverageFile));
@@ -42,11 +43,11 @@ public class ARTMaxMin {
 				}
 				tempAl.add(line);
 			}
-			this.CoverageMatrix = new char[tempAl.size()][columnNum]; // Initialize the Coverage Matrix.
+			this.coverageMatrix = new char[tempAl.size()][columnNum]; // Initialize the Coverage Matrix.
 
 			// Store the information in the ArrayList to the Array.
 			for (int i = 0; i < tempAl.size(); i++) {
-				CoverageMatrix[i] = tempAl.get(i).toCharArray();
+				coverageMatrix[i] = tempAl.get(i).toCharArray();
 			}
 
 			br.close();
@@ -59,7 +60,7 @@ public class ARTMaxMin {
 
 		this.getCoverageMatrix(this.coverageFile);
 
-		int len = this.CoverageMatrix.length, columnNum = this.CoverageMatrix[0].length;
+		int len = this.coverageMatrix.length, columnNum = this.coverageMatrix[0].length;
 		int[] selectedTestSequence = new int[len]; // Final list
 		ArrayList<Integer> selected = new ArrayList<Integer>(); // Store the current selected test cases.
 
@@ -74,45 +75,40 @@ public class ARTMaxMin {
 			char[] covered = new char[columnNum]; // Record the already covered statements/methods/branches.
 			this.clearArray(covered);
 			int coveredNum = 0; // Store the number of statements/methods/branches.
-			boolean stop = false;
-			// this.Print(selected);
+
 			// Randomly select the first candidate.
-			// int firstRandomCandidate = -1;
 			ArrayList<Integer> tempList = new ArrayList<Integer>();
 			for (int i = 0; i < len; i++) {
 				if (!selected.contains(i)) {
 					tempList.add(i);
 				}
 			}
+
 			int firstRandom = (int) (Math.random() * tempList.size());
 			candidate.add(tempList.get(firstRandom));
-			// tempList.remove(firstRandom);
-			this.mergeIntoCurrentArray(covered, this.CoverageMatrix[firstRandom]);
+
+			this.mergeIntoCurrentArray(covered, this.coverageMatrix[firstRandom]);
 			coveredNum = this.getCoveredNumber(covered);
 
-			// while(candidate.size() < LIMIT){
 			while (true) {
-				// int[] leftCandidate = new int[len - selected];
 
-				ArrayList<Integer> leftToChoose = new ArrayList<Integer>(); // int[len-selected.size()-candidate.size()];
-																			// //The left unselected candidates to
+				ArrayList<Integer> leftToChoose = new ArrayList<Integer>(); // The left unselected candidates to
 																			// choose.
 				for (int i = 0; i < len; i++) {
 					if (!selected.contains(i) && !candidate.contains(i)) {
 						leftToChoose.add(i);
 					}
 				}
+
 				if (leftToChoose.size() == 0) {
-					// System.out.println("Nothing to choose.");
+					// Nothing to choose
 					break;
 				}
 
 				int selcetedRandom = (int) (Math.random() * leftToChoose.size()); // Randomly select the next candidate.
-				// System.out.println(selcetedRandom+","+leftToChoose.size());
 				int newCandiadteIndex = leftToChoose.get(selcetedRandom); // Get the index of new selected candidate.
-				// if(this.getCoveredNumber(this.CoverageMatrix[newCandiadteIndex]) == 0)
-				// continue;
-				this.mergeIntoCurrentArray(covered, this.CoverageMatrix[newCandiadteIndex]); // Merge the new
+
+				this.mergeIntoCurrentArray(covered, this.coverageMatrix[newCandiadteIndex]); // Merge the new
 																								// statements/methods/branches
 																								// coverage into the
 																								// covered array.
@@ -120,18 +116,11 @@ public class ARTMaxMin {
 				if (currentCovered > coveredNum) {
 					coveredNum = currentCovered;
 					candidate.add(newCandiadteIndex); // Add the selected candidate to the candidate arraylist.
-					// leftCandidates[newCandiadteIndex] = -1;
 				} else {
-					// System.out.println(newCandiadteIndex+" break
-					// :");this.Print(this.CoverageMatrix[newCandiadteIndex]);
 					break; // If the statements/methods/branches coverage is not increase, then stop.
 				}
 			}
-			// if(candidate.size() ==0) continue;
-			// this.Print(candidate);
-			// Select procedure
-			// double[][] Distance = new double[selected.size()][candidate.size()]; //Store
-			// the distances of selected test cases to candidates.
+
 			double[] MaxDistances = new double[candidate.size()]; // Get the maximum distance from the candidate minimum
 																	// distances.
 			for (int j = 0; j < candidate.size(); j++) {
@@ -140,52 +129,43 @@ public class ARTMaxMin {
 																	// minimum distances.
 				for (int i = 0; i < selected.size(); i++) {
 					int testCaseNo = selected.get(i);
-					MinDistance[i] = this.getJaccardDistance(this.CoverageMatrix[testCaseNo],
-							this.CoverageMatrix[candidateNo]);
-					/*
-					 * if(MinDistance[i] == Double.NEGATIVE_INFINITY || MinDistance[i] ==
-					 * Double.NaN){ MinDistance[i] = 0;
-					 * System.out.println("Got a MinDistance is Double.NaN"); }
-					 */
+					MinDistance[i] = this.getJaccardDistance(this.coverageMatrix[testCaseNo],
+							this.coverageMatrix[candidateNo]);
 				}
+
 				int MinIndex = this.getMinIndex(MinDistance);
 				if (MinIndex == -1) {
 					System.out.println("ERROR: getSelectedTestSequence MinIndex == -1");
-					this.Print(MinDistance);
-					this.Print(selected);
-					this.Print(candidate);
 					System.exit(1);
 				}
 				MaxDistances[j] = MinDistance[MinIndex]; // Assign each candidate's minimum distance to the MaxDistances
 															// array.
 			}
+
 			int MaxIndex = this.getMaxIndex(MaxDistances);
 			if (MaxIndex == -1) {
 				System.out.println("ERROR: getSelectedTestSequence MaxIndex == -1");
-				this.Print(MaxDistances);
-				this.Print(selected);
-				this.Print(candidate);
 				System.exit(1);
 			}
 			// Select the candidate to selected arraylist.
 			selected.add(candidate.get(MaxIndex));
-			// leftCandidates[newCandiadteIndex] = -1;
 		}
-		
+
 		// Add the elements of selected arraylist to the test case sequence.
 		for (int i = 0; i < selected.size(); i++) {
 			selectedTestSequence[i] = selected.get(i);
 		}
-		
+
 		return selectedTestSequence;
 	}
 
-	//Calculate the Jaccard distance between two vector.
+	// Calculate the Jaccard distance between two vector.
 	public double getJaccardDistance(char[] a, char[] b) {
 		if (a.length != b.length) {
 			System.out.println("ERROR: length not equal.");
 			System.exit(0);
 		}
+		
 		int len = a.length;
 		double distance = 0;
 		int join = 0, combine = 0;
@@ -203,17 +183,20 @@ public class ARTMaxMin {
 			}
 		}
 		combine = this.getCoveredNumber(combinedArray);
+		
 		if (combine == 0) {
 			return 0;
 		}
+		
 		distance = 1.0 - (join / (double) combine);
 		return distance;
 	}
 
-	//Return the minimum element's index of the double[].
+	// Return the minimum element's index of the double[].
 	public int getMinIndex(double[] a) {
 		double min = Double.MAX_VALUE;
 		int index = -1;
+		
 		for (int i = 0; i < a.length; i++) {
 			if (a[i] < min) {
 				min = a[i];
@@ -223,10 +206,11 @@ public class ARTMaxMin {
 		return index;
 	}
 
-	//Return the maximum element's index of the double[].
+	// Return the maximum element's index of the double[].
 	public int getMaxIndex(double[] a) {
 		double max = -Double.MAX_VALUE;
 		int index = -1;
+		
 		for (int i = 0; i < a.length; i++) {
 			if (a[i] > max) {
 				max = a[i];
@@ -236,8 +220,8 @@ public class ARTMaxMin {
 		return index;
 	}
 
-	//Calculate the number of '1' in the array.
-	public int getCoveredNumber(char[] a) {
+	// Calculate the number of '1' in the array.
+	private int getCoveredNumber(char[] a) {
 		int num = 0;
 		for (int i = 0; i < a.length; i++) {
 			if (a[i] == '1') {
@@ -255,7 +239,7 @@ public class ARTMaxMin {
 	}
 
 	// Merge all the '1's in the new array into the current array.
-	public void mergeIntoCurrentArray(char[] current, char[] newArray) {
+	private void mergeIntoCurrentArray(char[] current, char[] newArray) {
 		if (current.length != newArray.length) {
 			System.out.println("ERROR: mergeIntoCurrentArray: length is not equal.");
 			System.exit(1);
@@ -268,42 +252,9 @@ public class ARTMaxMin {
 		}
 	}
 
-	public void Print(char[] a) {
-		System.out.println("------char[] Start-----Len: " + a.length);
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + ",");
-		}
-		System.out.println("\n------char[] End------");
-	}
-
 	public void Print(int[] a) {
-		System.out.println("------int[] Start-----Len: " + a.length);
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + ",");
-		}
-		System.out.println("\n------int[] End------");
+		System.out.println("------int[] Start------Len: " + a.length);
+		System.out.println(Arrays.toString(a));
+		System.out.println("------int[] End------");
 	}
-
-	public void Print(double[] a) {
-		System.out.println("------double[] Start-----Len: " + a.length);
-		for (int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + ",");
-		}
-		System.out.println("\n------double[] End------");
-	}
-
-	public void Print(ArrayList<Integer> a) {
-		System.out.println("------ArrayList<Integer> Start-----Len: " + a.size());
-		for (int i = 0; i < a.size(); i++) {
-			System.out.print(a.get(i) + ",");
-		}
-		System.out.println("\n------ArrayList<Integer> End------");
-	}
-	/*
-	 * //For Unit Test. public static void main(String[] args){ ARTMaxMin art = new
-	 * ARTMaxMin("you owen directory", "BranchCommonTestCasesMatrix.txt");
-	 * art.Print(art.getSelectedTestSequence());
-	 * 
-	 * }
-	 */
 }
