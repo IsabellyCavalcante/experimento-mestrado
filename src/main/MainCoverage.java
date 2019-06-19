@@ -14,9 +14,9 @@ public class MainCoverage {
 
 	public static void main(String[] args) {
 //		execGreedyTotal();
-		execGreedyAdd();
+//		execGreedyAdd();
 //		execEchalonTotal();
-//		execEchalonTotalTimeExecution();
+		execEchalonTotalTimeExecution();
 	}
 
 	protected static void execGreedyTotal() {
@@ -41,7 +41,7 @@ public class MainCoverage {
 
 	protected static void execEchalonTotalTimeExecution() {
 		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFileEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp3.txt"));
+		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp1.txt"));
 		et.setTimeExecution(base, "times.txt");
 		et.print(et.prioritize());
 	}
