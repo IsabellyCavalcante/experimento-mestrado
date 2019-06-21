@@ -19,10 +19,17 @@ with open('dados/Priorizacao_do_exp1.txt', 'r') as tests:
 
             for i in prio:
                 out.write(file_names[int(i)])
-        
-        # Echelon
-        with open('dados/echelon_final.txt', 'w') as out:
+
+        #Echalon
+        with open('dados/echalon_final.txt', 'w') as out:
             prio = file_tests[15].split(", ")
 
+            for i in prio:
+                out.write(file_names[int(i)])
+                
+        #Echalon Time
+        with open('dados/echalon_time_final.txt', 'w') as out:
+            prio = file_tests[21].split(", ")
+            
             for i in prio:
                 out.write(file_names[int(i)])

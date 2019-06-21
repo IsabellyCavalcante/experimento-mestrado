@@ -18,15 +18,30 @@ class EchelonTimeExecutionTest {
 		ech = new EchelonTimeExecution(getCoverage());
 
 		ech.setBlockAffected(getBlock());
-		ech.setTimeExecution("src/dados", "times.txt");
+		ech.setTimeExecution("src/tests", "times.txt");
 	}
 
 	@Test
 	void test() {
 		List<Integer> exp = new ArrayList<>();
 		Collections.addAll(exp, 5, 0, 8, 3, 1, 4, 6, 9, 2, 7);
+
+		assertEquals(exp, ech.prioritize());
+	}
+	
+	@Test
+	void test2() {
+		List<String[]> newCoverage = getCoverage();
+		newCoverage.add(new String[] {"/test/isa/classeA.4", "/test/isa/classeB.2", "/test/isa/classeB.4", "/test/isa/classeB.11"}); // test11 - 3, 5, 6 
+		newCoverage.add(new String[] {"/test/isa/classeA.2"}); // test12 - 1
+		newCoverage.add(new String[] {"/test/isa/classeE.13"}); // test13 - nada
+		ech.setCoverage(newCoverage);
+		ech.setTimeExecution("src/tests", "times2.txt");
 		
-		assertEquals(ech.prioritize(), exp);
+		List<Integer> exp = new ArrayList<>();
+		Collections.addAll(exp, 10, 0, 5, 6, 1, 11, 8, 3, 4, 9, 2, 7, 12);
+		
+		assertEquals(exp, ech.prioritize());
 	}
 
 	private List<String[]> getCoverage() {

@@ -9,43 +9,47 @@ import java.util.List;
 public class MainCoverage {
 
 	private static String coverageFileSimple = "coverage-vG.txt";
-	private static String coverageFileEchalon = "coverage-vE.txt";
+	private static String coverageFileEchelon = "coverage-vE.txt";
 	private static String base = "src/dados";
+	private static String blockAffectedFile = "blockAffected-exp3.txt";
 
 	public static void main(String[] args) {
 //		execGreedyTotal();
 //		execGreedyAdd();
-//		execEchalonTotal();
-//		execEchalonTotalTimeExecution();
+//		execEchelon();
+//		execEchelonTimeExecution();
+		execARTMaxMin();
 	}
 
-	protected static void execGreedyTotal() {
+	private static void execGreedyTotal() {
 		GreedyTotal gt = new GreedyTotal(base, coverageFileSimple);
 		gt.Print(gt.getSelectedTestSequence());
 	}
 
-	protected static void execGreedyAdd() {
+	private static void execGreedyAdd() {
 		GreedyAdditional ga = new GreedyAdditional(base, coverageFileSimple);
 		ga.Print(ga.getSelectedTestSequence());
 	}
 
-	/**
-	 * Call execution's echalon total technique. Require the coverageFile and
-	 * blockAffectedFile.
-	 */
-	protected static void execEchalonTotal() {
-		Echelon et = new Echelon(base, coverageFileEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp1.txt"));
+	private static void execEchelon() {
+		Echelon et = new Echelon(base, coverageFileEchelon);
+		
+		et.setBlockAffected(getBlockAffected(base + File.separator + blockAffectedFile));
 		et.print(et.prioritize());
 	}
 
-	protected static void execEchalonTotalTimeExecution() {
-		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFileEchalon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + "blockAffected-exp3.txt"));
+	private static void execEchelonTimeExecution() {
+		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFileEchelon);
+		et.setBlockAffected(getBlockAffected(base + File.separator + blockAffectedFile));
 		et.setTimeExecution(base, "times.txt");
 		et.print(et.prioritize());
 	}
 
+	private static void execARTMaxMin() {
+		ARTMaxMin random = new ARTMaxMin(base, coverageFileSimple);
+		random.getSelectedTestSequence();
+	}
+	
 	/**
 	 * Function aux for Echalon's execution. Get from file the modified classes and
 	 * return them.
@@ -53,7 +57,7 @@ public class MainCoverage {
 	 * @param blockAffectedFile
 	 * @return
 	 */
-	protected static List<String> getBlockAffected(String blockAffectedFile) {
+	private static List<String> getBlockAffected(String blockAffectedFile) {
 		List<String> blockAffected = new ArrayList<>();
 		String line;
 		try {
