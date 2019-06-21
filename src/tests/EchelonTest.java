@@ -10,18 +10,18 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EchelonTest {
+public class EchelonTest {
 	private Echelon ech;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 		ech = new Echelon(getCoverage());
 
 		ech.setBlockAffected(getBlock());
 	}
 
 	@Test
-	void test() {
+	public void test() {
 		List<Integer> exp = new ArrayList<>();
 		Collections.addAll(exp, 0, 5, 8, 3, 1, 4, 6, 9, 2, 7);
 		

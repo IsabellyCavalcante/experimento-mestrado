@@ -10,11 +10,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EchelonTimeExecutionTest {
+public class EchelonTimeExecutionTest {
 	private EchelonTimeExecution ech;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
 		ech = new EchelonTimeExecution(getCoverage());
 
 		ech.setBlockAffected(getBlock());
@@ -22,7 +22,7 @@ class EchelonTimeExecutionTest {
 	}
 
 	@Test
-	void test() {
+	public void test() {
 		List<Integer> exp = new ArrayList<>();
 		Collections.addAll(exp, 5, 0, 8, 3, 1, 4, 6, 9, 2, 7);
 
@@ -30,7 +30,7 @@ class EchelonTimeExecutionTest {
 	}
 	
 	@Test
-	void test2() {
+	public void test2() {
 		List<String[]> newCoverage = getCoverage();
 		newCoverage.add(new String[] {"/test/isa/classeA.4", "/test/isa/classeB.2", "/test/isa/classeB.4", "/test/isa/classeB.11"}); // test11 - 3, 5, 6 
 		newCoverage.add(new String[] {"/test/isa/classeA.2"}); // test12 - 1
