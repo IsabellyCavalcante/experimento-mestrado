@@ -47,7 +47,7 @@ public class MainCoverage {
 
 	private static void execARTMaxMin() {
 		ARTMaxMin random = new ARTMaxMin(base, coverageFileSimple);
-		random.getSelectedTestSequence();
+		random.extractToFile(random.getSelectedTestSequence());
 	}
 	
 	/**

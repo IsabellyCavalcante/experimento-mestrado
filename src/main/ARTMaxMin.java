@@ -3,6 +3,10 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -266,5 +270,24 @@ public class ARTMaxMin {
 		System.out.println("------int[] Start------Len: " + a.length);
 		System.out.println(Arrays.toString(a));
 		System.out.println("------int[] End------");
+	}
+	
+	public void extractToFile(int[] a) {
+		try {
+			FileWriter fw = new FileWriter("src/dados/outputARTMaxMin.txt");
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
+			LocalDateTime now = LocalDateTime.now();
+			fw.write(dtf.format(now));
+			fw.write(String.format("\n------int[] Start------Len: %d \n", a.length));
+			fw.write(Arrays.toString(a));
+			fw.write("\n------int[] End------\n");
+			now = LocalDateTime.now();
+			fw.write(dtf.format(now));
+			fw.close();
+			
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }

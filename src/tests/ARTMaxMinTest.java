@@ -16,7 +16,7 @@ public class ARTMaxMinTest {
 
 	@Test
 	public void test() {
-		random.Print(random.getSelectedTestSequence());
+		random.extractToFile(random.getSelectedTestSequence());
 	}
 	
 	private char[][] getCoverageMatrix() {
