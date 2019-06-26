@@ -1,5 +1,7 @@
 package tests;
 
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +18,8 @@ public class ARTMaxMinTest {
 
 	@Test
 	public void test() {
-		random.extractToFile(random.getSelectedTestSequence());
+		LocalDateTime now = LocalDateTime.now();
+		random.extractToFile(random.getSelectedTestSequence(), now);
 	}
 	
 	private char[][] getCoverageMatrix() {

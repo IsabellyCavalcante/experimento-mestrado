@@ -272,17 +272,16 @@ public class ARTMaxMin {
 		System.out.println("------int[] End------");
 	}
 	
-	public void extractToFile(int[] a) {
+	public void extractToFile(int[] a, LocalDateTime initial) {
 		try {
 			FileWriter fw = new FileWriter("src/dados/outputARTMaxMin.txt");
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
-			LocalDateTime now = LocalDateTime.now();
-			fw.write(dtf.format(now));
+			fw.write(dtf.format(initial));
 			fw.write(String.format("\n------int[] Start------Len: %d \n", a.length));
 			fw.write(Arrays.toString(a));
 			fw.write("\n------int[] End------\n");
-			now = LocalDateTime.now();
+			LocalDateTime now = LocalDateTime.now();
 			fw.write(dtf.format(now));
 			fw.close();
 			

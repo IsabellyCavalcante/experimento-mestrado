@@ -1,8 +1,10 @@
 package main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,8 @@ public class MainCoverage {
 
 	private static void execARTMaxMin() {
 		ARTMaxMin random = new ARTMaxMin(base, coverageFileSimple);
-		random.extractToFile(random.getSelectedTestSequence());
+		LocalDateTime now = LocalDateTime.now();
+		random.extractToFile(random.getSelectedTestSequence(), now);
 	}
 	
 	/**
