@@ -20,7 +20,8 @@ public class MainCoverage {
 //		execGreedyAdd();
 //		execEchelon();
 //		execEchelonTimeExecution();
-		execARTMaxMin();
+//		execARTMaxMin();
+		execGenetic();
 	}
 
 	private static void execGreedyTotal() {
@@ -35,7 +36,7 @@ public class MainCoverage {
 
 	private static void execEchelon() {
 		Echelon et = new Echelon(base, coverageFileEchelon);
-		
+
 		et.setBlockAffected(getBlockAffected(base + File.separator + blockAffectedFile));
 		et.print(et.prioritize());
 	}
@@ -52,7 +53,14 @@ public class MainCoverage {
 		LocalDateTime now = LocalDateTime.now();
 		random.extractToFile(random.getSelectedTestSequence(), now);
 	}
-	
+
+	private static void execGenetic() {
+		LocalDateTime now = LocalDateTime.now();
+		Genetic tc = new Genetic(base, coverageFileSimple);
+		//tc.print(tc.startGeneration());
+		tc.extractToFile(tc.startGeneration(), now);
+	}
+
 	/**
 	 * Function aux for Echalon's execution. Get from file the modified classes and
 	 * return them.

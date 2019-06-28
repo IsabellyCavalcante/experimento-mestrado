@@ -5,8 +5,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /*
@@ -450,10 +454,27 @@ public class Genetic {
 		}
 	}
 
-	public static void main(String[] args) {
-		String directory = "your owen directory";
-		String outputFile = "statement_matrix.txt";
-		Genetic tc = new Genetic(directory, outputFile);
-		tc.startGeneration();
+	public void print(int[] a) {
+		System.out.println("------int[] Start------Len: " + a.length);
+		System.out.println(Arrays.toString(a));
+		System.out.println("------int[] End------");
+	}
+	
+	public void extractToFile(int[] a, LocalDateTime initial) {
+		try {
+			FileWriter fw = new FileWriter("src/dados/outputGenetic-exp2.txt");
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
+			fw.write(dtf.format(initial));
+			fw.write(String.format("\n------int[] Start------Len: %d \n", a.length));
+			fw.write(Arrays.toString(a));
+			fw.write("\n------int[] End------\n");
+			LocalDateTime now = LocalDateTime.now();
+			fw.write(dtf.format(now));
+			fw.close();
+			
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
