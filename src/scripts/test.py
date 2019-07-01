@@ -1,4 +1,4 @@
-with open('../dados/Priorizacao_do_exp3.txt', 'r') as tests:
+with open('../dados/Priorizacao_do_exp1.txt', 'r') as tests:
     
     file_tests = tests.readlines()
 
@@ -37,6 +37,13 @@ with open('../dados/Priorizacao_do_exp3.txt', 'r') as tests:
         #ARTMaxMin
         with open('../dados/art_max_min_final.txt', 'w') as out:
             prio = file_tests[27].split(", ")
+
+            for i in prio:
+                out.write(file_names[int(i)])
+
+        #Genetic
+        with open('../dados/genetic_final.txt', 'w') as out:
+            prio = file_tests[33].split(", ")
 
             for i in prio:
                 out.write(file_names[int(i)])
