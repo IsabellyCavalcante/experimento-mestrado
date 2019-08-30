@@ -274,7 +274,7 @@ public class ARTMaxMin {
 	
 	public void extractToFile(int[] a, LocalDateTime initial, String post) {
 		try {
-			String fileName = String.format("src/dados/outputARTMaxMin-%s.txt", post);
+			String fileName = String.format("dados/output/outputARTMaxMin-%s.txt", post);
 			FileWriter fw = new FileWriter(fileName);
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");

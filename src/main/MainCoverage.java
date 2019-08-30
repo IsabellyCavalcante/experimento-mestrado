@@ -12,7 +12,7 @@ public class MainCoverage {
 
 	private static String coverageFileSimple = "coverage-vG-%s.txt";
 	private static String coverageFileEchelon = "coverage-vE-%s.txt";
-	private static String base = "src/dados";
+	private static String base = "dados";
 	private static String blockAffectedFile = "blockAffected-exp-%s.txt";
 
 	public static void main(String[] args) {

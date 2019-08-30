@@ -223,7 +223,7 @@ public class Echelon {
 	
 	public void extractToFile(List<Integer> a, LocalDateTime initial, String post) {
 		try {
-			String fileName = String.format("src/dados/outputEchelon-%s.txt", post);
+			String fileName = String.format("dados/output/outputEchelon-%s.txt", post);
 			FileWriter fw = new FileWriter(fileName);
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");

@@ -462,7 +462,7 @@ public class Genetic {
 	
 	public void extractToFile(int[] a, LocalDateTime initial, String post) {
 		try {
-			String fileName = String.format("src/dados/outputGenetic-%s.txt", post);
+			String fileName = String.format("dados/output/outputGenetic-%s.txt", post);
 			FileWriter fw = new FileWriter(fileName);
 			
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
