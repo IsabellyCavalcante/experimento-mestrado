@@ -48,57 +48,95 @@ public class MainCoverage {
 	}
 
 	private static void execGreedyTotal(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica greedy total ----");
 		String coverageFile = String.format(coverageFileSimple, post);
 		GreedyTotal gt = new GreedyTotal(base, coverageFile);
 
 		LocalDateTime now = LocalDateTime.now();
-		gt.extractToFile(gt.getSelectedTestSequence(), now, post);
+		int[] listPrioritized = gt.getSelectedTestSequence();
+		System.out.println("---- finalizada priorizacao da tecnica greedy total ----");
+		
+		System.out.println("---- iniciando gravacao em arquivo - greedy total ----");
+		gt.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - greedy total ----");
 	}
 
 	private static void execGreedyAdd(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica greedy add ----");
 		String coverageFile = String.format(coverageFileSimple, post);
 		GreedyAdditional ga = new GreedyAdditional(base, coverageFile);
 
 		LocalDateTime now = LocalDateTime.now();
-		ga.extractToFile(ga.getSelectedTestSequence(), now, post);
+		int[] listPrioritized = ga.getSelectedTestSequence();
+		System.out.println("---- finalizada priorizacao da tecnica greedy add ----");
+
+		System.out.println("---- iniciando gravacao em arquivo - greedy add ----");
+		ga.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - greedy add ----");
 	}
 
 	private static void execEchelon(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica echelon ----");
 		String coverageFile = String.format(coverageFileEchelon, post);
 		String blockFile = String.format(blockAffectedFile, post);
+		
 		Echelon et = new Echelon(base, coverageFile);
-
 		et.setBlockAffected(getBlockAffected(base + File.separator + blockFile));
+		
 		LocalDateTime now = LocalDateTime.now();
-		et.extractToFile(et.prioritize(), now, post);
+		List<Integer> listPrioritized = et.prioritize();
+		System.out.println("---- finalizada priorizacao da tecnica echelon ----");
+		
+		System.out.println("---- iniciando gravacao em arquivo - echelon ----");
+		et.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - echelon ----");
 	}
 
 	private static void execEchelonTimeExecution(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica echelon time ----");
 		String coverageFile = String.format(coverageFileEchelon, post);
 		String blockFile = String.format(blockAffectedFile, post);
 		String timesFile = String.format("times-%.txt", post);
+		
 		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFile);
-
 		et.setBlockAffected(getBlockAffected(base + File.separator + blockFile));
 		et.setTimeExecution(base, timesFile);
+
 		LocalDateTime now = LocalDateTime.now();
-		et.extractToFile(et.prioritize(), now, post);
+		List<Integer> listPrioritized = et.prioritize();
+		System.out.println("---- finalizada priorizacao da tecnica echelon time ----");
+		
+		System.out.println("---- iniciando gravacao em arquivo - echelon time ----");
+		et.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - echelon time ----");
 	}
 
 	private static void execARTMaxMin(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica random ----");
 		String coverageFile = String.format(coverageFileSimple, post);
 		ARTMaxMin random = new ARTMaxMin(base, coverageFile);
 
 		LocalDateTime now = LocalDateTime.now();
-		random.extractToFile(random.getSelectedTestSequence(), now, post);
+		int[] listPrioritized = random.getSelectedTestSequence();
+		System.out.println("---- finalizada priorizacao da tecnica random ----");
+		
+		System.out.println("---- iniciando gravacao em arquivo - random ----");
+		random.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - random ----");
 	}
 
 	private static void execGenetic(String post) {
+		System.out.println("---- iniciando priorizacao da tecnica genetic ----");
 		String coverageFile = String.format(coverageFileSimple, post);
 		Genetic tc = new Genetic(base, coverageFile);
 
 		LocalDateTime now = LocalDateTime.now();
-		tc.extractToFile(tc.startGeneration(), now, post);
+		int[] listPrioritized = tc.startGeneration();
+		System.out.println("---- finalizada priorizacao da tecnica genetic ----");
+		
+		System.out.println("---- iniciando gravacao em arquivo - genetic ----");
+		tc.extractToFile(listPrioritized, now, post);
+		System.out.println("---- finalizada gravacao em arquivo - genetic ----");
 	}
 
 	/**
