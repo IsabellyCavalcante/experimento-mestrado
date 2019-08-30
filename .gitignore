@@ -1,5 +1,6 @@
 src/dados/
 src/dadosTests
+src/main/*.class
 bin/
 .settings/
 .project
