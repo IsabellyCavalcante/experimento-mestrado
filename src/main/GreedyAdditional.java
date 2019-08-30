@@ -6,6 +6,10 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -183,6 +187,25 @@ public class GreedyAdditional {
 		System.out.println("------int[] Start------Len: " + a.length);
 		System.out.println(Arrays.toString(a));
 		System.out.println("------int[] End------");
+	}
+	
+	public void extractToFile(int[] a, LocalDateTime initial, String post) {
+		try {
+			String fileName = String.format("src/dados/outputGreedyAdd-%s.txt", post);
+			FileWriter fw = new FileWriter(fileName);
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
+			fw.write(dtf.format(initial));
+			fw.write(String.format("\n------int[] Start------Len: %d \n", a.length));
+			fw.write(Arrays.toString(a));
+			fw.write("\n------int[] End------\n");
+			LocalDateTime now = LocalDateTime.now();
+			fw.write(dtf.format(now));
+			fw.close();
+			
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

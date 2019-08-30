@@ -10,55 +10,95 @@ import java.util.List;
 
 public class MainCoverage {
 
-	private static String coverageFileSimple = "coverage-vG.txt";
-	private static String coverageFileEchelon = "coverage-vE.txt";
+	private static String coverageFileSimple = "coverage-vG-%s.txt";
+	private static String coverageFileEchelon = "coverage-vE-%s.txt";
 	private static String base = "src/dados";
-	private static String blockAffectedFile = "blockAffected-exp3.txt";
+	private static String blockAffectedFile = "blockAffected-exp-%s.txt";
 
 	public static void main(String[] args) {
-//		execGreedyTotal();
-//		execGreedyAdd();
-//		execEchelon();
-//		execEchelonTimeExecution();
-//		execARTMaxMin();
-		execGenetic();
+
+		String tecnica = args[0];
+		String post = args[1];
+
+		switch (tecnica) {
+		case "greedyTotal":
+			execGreedyTotal(post);
+			break;
+
+		case "greedyAdd":
+			execGreedyAdd(post);
+			break;
+
+		case "echelon":
+			execEchelon(post);
+			break;
+
+		case "echelonTime":
+			execEchelonTimeExecution(post);
+			break;
+
+		case "random":
+			execARTMaxMin(post);
+			break;
+
+		case "genetic":
+			execGenetic(post);
+			break;
+		}
 	}
 
-	private static void execGreedyTotal() {
-		GreedyTotal gt = new GreedyTotal(base, coverageFileSimple);
-		gt.Print(gt.getSelectedTestSequence());
-	}
+	private static void execGreedyTotal(String post) {
+		String coverageFile = String.format(coverageFileSimple, post);
+		GreedyTotal gt = new GreedyTotal(base, coverageFile);
 
-	private static void execGreedyAdd() {
-		GreedyAdditional ga = new GreedyAdditional(base, coverageFileSimple);
-		ga.Print(ga.getSelectedTestSequence());
-	}
-
-	private static void execEchelon() {
-		Echelon et = new Echelon(base, coverageFileEchelon);
-
-		et.setBlockAffected(getBlockAffected(base + File.separator + blockAffectedFile));
-		et.print(et.prioritize());
-	}
-
-	private static void execEchelonTimeExecution() {
-		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFileEchelon);
-		et.setBlockAffected(getBlockAffected(base + File.separator + blockAffectedFile));
-		et.setTimeExecution(base, "times.txt");
-		et.print(et.prioritize());
-	}
-
-	private static void execARTMaxMin() {
-		ARTMaxMin random = new ARTMaxMin(base, coverageFileSimple);
 		LocalDateTime now = LocalDateTime.now();
-		random.extractToFile(random.getSelectedTestSequence(), now);
+		gt.extractToFile(gt.getSelectedTestSequence(), now, post);
 	}
 
-	private static void execGenetic() {
+	private static void execGreedyAdd(String post) {
+		String coverageFile = String.format(coverageFileSimple, post);
+		GreedyAdditional ga = new GreedyAdditional(base, coverageFile);
+
 		LocalDateTime now = LocalDateTime.now();
-		Genetic tc = new Genetic(base, coverageFileSimple);
-		//tc.print(tc.startGeneration());
-		tc.extractToFile(tc.startGeneration(), now);
+		ga.extractToFile(ga.getSelectedTestSequence(), now, post);
+	}
+
+	private static void execEchelon(String post) {
+		String coverageFile = String.format(coverageFileEchelon, post);
+		String blockFile = String.format(blockAffectedFile, post);
+		Echelon et = new Echelon(base, coverageFile);
+
+		et.setBlockAffected(getBlockAffected(base + File.separator + blockFile));
+		LocalDateTime now = LocalDateTime.now();
+		et.extractToFile(et.prioritize(), now, post);
+	}
+
+	private static void execEchelonTimeExecution(String post) {
+		String coverageFile = String.format(coverageFileEchelon, post);
+		String blockFile = String.format(blockAffectedFile, post);
+		String timesFile = String.format("times-%.txt", post);
+		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFile);
+
+		et.setBlockAffected(getBlockAffected(base + File.separator + blockFile));
+		et.setTimeExecution(base, timesFile);
+		LocalDateTime now = LocalDateTime.now();
+		et.extractToFile(et.prioritize(), now, post);
+	}
+
+	private static void execARTMaxMin(String post) {
+		String coverageFile = String.format(coverageFileSimple, post);
+		ARTMaxMin random = new ARTMaxMin(base, coverageFile);
+
+		LocalDateTime now = LocalDateTime.now();
+		random.extractToFile(random.getSelectedTestSequence(), now, post);
+	}
+
+	private static void execGenetic(String post) {
+		String coverageFile = String.format(coverageFileSimple, post);
+		Genetic tc = new Genetic(base, coverageFile);
+
+		LocalDateTime now = LocalDateTime.now();
+		tc.extractToFile(tc.startGeneration(), now, post);
 	}
 
 	/**

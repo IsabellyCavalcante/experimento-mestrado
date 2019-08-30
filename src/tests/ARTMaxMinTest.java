@@ -19,7 +19,7 @@ public class ARTMaxMinTest {
 	@Test
 	public void test() {
 		LocalDateTime now = LocalDateTime.now();
-		random.extractToFile(random.getSelectedTestSequence(), now);
+		random.extractToFile(random.getSelectedTestSequence(), now, "teste");
 	}
 	
 	private char[][] getCoverageMatrix() {

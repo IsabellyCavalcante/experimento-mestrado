@@ -3,7 +3,12 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Map.Entry;
@@ -253,6 +258,25 @@ public class EchelonTimeExecution {
 
 		tests.stream().forEach(element -> System.out.print(element + ", "));
 		System.out.println("\n------int[] End------");
+	}
+	
+	public void extractToFile(List<Integer> a, LocalDateTime initial, String post) {
+		try {
+			String fileName = String.format("src/dados/outputEchelonTime-%s.txt", post);
+			FileWriter fw = new FileWriter(fileName);
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss:SSS");
+			fw.write(dtf.format(initial));
+			fw.write(String.format("\n------int[] Start------Len: %d \n", a.size()));
+			fw.write(Arrays.toString(a.toArray()));
+			fw.write("\n------int[] End------\n");
+			LocalDateTime now = LocalDateTime.now();
+			fw.write(dtf.format(now));
+			fw.close();
+			
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
