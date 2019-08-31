@@ -20,7 +20,7 @@ def main(post):
         file_tests = tests.readlines()
         
         for name in file_tests:
-            time = dict_test[name.decode('CP1252').rstrip()]
+            time = dict_test[name.decode("utf-8").rstrip()]
             out.write(time)
             out.write('\n')
 
