@@ -2,7 +2,7 @@ from xml.dom import minidom
 import sys
 
 def main(post):
-    xml_doc = minidom.parse('../dados/execution_time-{}.xml.format(post)')
+    xml_doc = minidom.parse('../dados/execution_time-{}.xml'.format(post))
     test_list = xml_doc.getElementsByTagName('testcase')
 
     with open('../dados/output/original-{}.txt'.format(post), 'w') as out:
