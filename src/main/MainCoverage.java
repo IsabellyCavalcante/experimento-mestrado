@@ -13,7 +13,7 @@ public class MainCoverage {
 	private static String coverageFileSimple = "coverage-vG-%s.txt";
 	private static String coverageFileEchelon = "coverage-vE-%s.txt";
 	private static String base = "dados";
-	private static String blockAffectedFile = "blockAffected-exp-%s.txt";
+	private static String blockAffectedFile = "blockAffected-%s.txt";
 
 	public static void main(String[] args) {
 
@@ -96,7 +96,7 @@ public class MainCoverage {
 		System.out.println("---- iniciando priorizacao da tecnica echelon time ----");
 		String coverageFile = String.format(coverageFileEchelon, post);
 		String blockFile = String.format(blockAffectedFile, post);
-		String timesFile = String.format("times-%.txt", post);
+		String timesFile = String.format("times-%s.txt", post);
 		
 		EchelonTimeExecution et = new EchelonTimeExecution(base, coverageFile);
 		et.setBlockAffected(getBlockAffected(base + File.separator + blockFile));
