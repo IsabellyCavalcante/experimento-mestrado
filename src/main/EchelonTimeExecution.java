@@ -15,6 +15,11 @@ import java.util.Map.Entry;
 
 import java.util.AbstractMap.SimpleEntry;
 
+
+/*
+ * Echelon Algorithm Extension for Test Case Prioritization.
+ * isabellysantos@copin.ufcg.edu.br
+ */
 public class EchelonTimeExecution {
 
 	private List<String> blockAffected;
