@@ -14,6 +14,11 @@ import java.util.Map.Entry;
 
 import java.util.AbstractMap.SimpleEntry;
 
+
+/*
+ * Echelon Algorithm for Test Case Prioritization.
+ * isabellysantos@copin.ufcg.edu.br
+ */
 public class Echelon {
 
 	private List<String> blockAffected;
